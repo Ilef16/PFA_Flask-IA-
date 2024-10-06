@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion Detection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        form {
+            display: inline-block;
+            text-align: left;
+        }
+        input[type="file"], input[type="text"] {
+            display: block;
+            margin-bottom: 20px;
+        }
+        .result {
+            margin-top: 20px;
+            white-space: pre-wrap; /* To preserve formatting of the report */
+        }
+    </style>
+</head>
+<body>
+    <h1>Emotion Detection from Video</h1>
+    <form id="upload-form" enctype="multipart/form-data">
+        <label for="video">Upload Video:</label>
+        <input type="file" id="video" name="video" accept="video/mp4" required>
+        <button type="submit">Submit</button>
+    </form>
+    <div class="result" id="result"></div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var formData = new FormData();
+            var videoFile = document.getElementById('video').files[0];
+            formData.append('video', videoFile);
+
+            fetch('/detect_emotions', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').innerText = 'An error occurred: ' + data.error;
+                } else {
+                    document.getElementById('result').innerText = data.report;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerText = 'An error occurred. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>

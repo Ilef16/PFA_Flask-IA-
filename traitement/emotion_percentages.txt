@@ -1,0 +1,7 @@
+Angry: 0.13%
+Disgust: 0.00%
+Fear: 0.19%
+Happy: 91.54%
+Neutral: 6.65%
+Sad: 0.06%
+Surprise: 1.42%
